@@ -138,7 +138,7 @@ public class AsistenciaResource {
 	@PUT
 	@Path("/chats")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response insertarDetalleAsistencia(ChatBean chat) {
+	public Response insertarChatAsistencia(ChatBean chat) {
 		
 		Connection conn;
 		CallableStatement stmt;
