@@ -72,7 +72,7 @@ public class AsistenciaResource {
 			conn.setAutoCommit(false);
 			
 			try {
-				stmt = conn.prepareCall("{CALL dbo.CERRAR_ASISTENCIA(?,?)}");
+				stmt = conn.prepareCall("{CALL dbo.CERRAR_ASISTENCIA(?)}");
 				stmt.setInt(1, asistencia.getId());
 				
 				stmt.execute();
