@@ -3,9 +3,12 @@ package ar.edu.ubp.das.resources;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -125,6 +128,52 @@ public class AsistenciaResource {
 				throw e;
 			}finally {
 				conn.setAutoCommit(true);
+				conn.close();
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			return Response.status(Response.Status.BAD_REQUEST).entity(e).build();
+		}
+	}
+	
+	@GET
+	@Path("/finalizadas")
+	public Response obtenerAsistenciasFinalizadas() {
+		
+		Connection conn;
+		CallableStatement stmt;
+		ResultSet result;
+		AsistenciaBean asistencia;
+		LinkedList<AsistenciaBean> asistencias;
+		
+		try {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			conn=DriverManager.getConnection("jdbc:sqlserver://127.0.0.1;databaseName=bomberos","sa","AaBbCc123");
+			conn.setAutoCommit(false);
+			
+			try {
+				stmt = conn.prepareCall("{CALL dbo.OBTENER_ASISTENCIAS_FINALIZADAS()}");
+				
+				result = stmt.executeQuery();
+				asistencias = new LinkedList<AsistenciaBean>();
+				
+				while(result.next()) {
+					asistencia = new AsistenciaBean();
+					asistencia.setId(result.getInt("id"));
+					asistencia.setFecha(result.getString("fecha_cierre"));
+					asistencia.setCuil(result.getLong("cuil"));
+					asistencia.setIdSolicitud(result.getInt("id_solicitud"));
+					asistencias.add(asistencia);
+				}
+				stmt.close();
+				
+				return Response.status(Response.Status.OK).entity(asistencias).build();
+				
+			} catch (SQLException e) {
+				conn.rollback();
+				throw e;
+			}finally {
 				conn.close();
 			}
 			

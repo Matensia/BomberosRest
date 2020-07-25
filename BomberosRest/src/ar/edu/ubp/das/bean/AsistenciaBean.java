@@ -1,15 +1,14 @@
 package ar.edu.ubp.das.bean;
 
-import java.sql.Date;
 
 public class AsistenciaBean {
 	
-	private int 	id;
-	private String 	idServicio;
-	private String 	estado;
-	private Date 	fecha;
-	private int 	idSolicitud;
-	private long	cuil;
+	private int 			id;
+	private String 			idServicio;
+	private String 			estado;
+	private String 			fecha;
+	private int 			idSolicitud;
+	private long			cuil;
 	
 	public long getCuil() {
 		return cuil;
@@ -35,10 +34,10 @@ public class AsistenciaBean {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	public Date getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
-	public void setFecha(Date fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 	public int getIdSolicitud() {
